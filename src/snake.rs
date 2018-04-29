@@ -52,7 +52,7 @@ impl Snake {
         })
     }
 
-    pub fn update(&mut self, dim: u32) -> bool {
+    pub fn update(&mut self, dim: u32, just_ate: bool) -> bool {
         let mut new_head: SnakePiece = (*self.body.front().expect("Snake has no body")).clone();
 
         // Give the new head location based on direction
@@ -69,6 +69,10 @@ impl Snake {
         || (self.dir == Direction::Down && new_head.1 == dim - 1)
         || (self.dir == Direction::Right && new_head.0 == dim - 1) {
             return false;
+        }
+
+        if !just_ate {
+            self.body.pop_back();
         }
 
         self.body.push_front(new_head);

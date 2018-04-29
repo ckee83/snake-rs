@@ -53,7 +53,7 @@ impl Food {
             let transform = c.transform
                 .trans(x_rot_axis, y_rot_axis)
                 .rot_rad(rotation)
-                .trans((-0.5 * width as f64), (-0.5 * width as f64));
+                .trans(-0.5 * width as f64, -0.5 * width as f64);
 
             let coords = graphics::rectangle::square(
                 0.0 as f64,

@@ -67,30 +67,18 @@ impl Game {
     }
 
     pub fn update(&mut self, args: &UpdateArgs) -> bool {
-        if !self.snake.update(self.dimension) { return false };
+        if !self.snake.update(self.dimension, self.just_ate) { return false };
 
         if self.just_ate {
             self.score += 1;
             self.just_ate = false;
+            print!("Score increased to {:?}", self.score);
         }
 
         self.just_ate = self.food.update(args, &self.snake);
 
         if self.just_ate {
             self.food = Food::new(self.dimension, self.width, &self.snake);
-            // use rand::Rng;
-            // use rand::thread_rng;
-            //
-            // // pick a random coord for new food and make sure our snake isn't there
-            // let mut r = thread_rng();
-            // loop {
-            //     let x = r.gen_range(0, self.dim);
-            //     let y = r.gen_range(0, self.dim);
-            //     if !self.snake.is_collide(x, y) {
-            //         self.food = Food::new(x, y, &self.snake);
-            //         break;
-            //     }
-            // }
         }
 
         true
