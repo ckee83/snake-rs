@@ -8,6 +8,7 @@ extern crate piston;
 extern crate graphics;
 extern crate glutin_window;
 extern crate opengl_graphics;
+extern crate rand;
 
 use piston::window::WindowSettings;
 use piston::event_loop::*;
@@ -16,16 +17,26 @@ use glutin_window::GlutinWindow;
 use opengl_graphics::{ GlGraphics, OpenGL };
 
 use snake_game::Game;
-pub mod snake_game;
-pub mod snake;
+mod snake_game;
+mod snake;
+mod food;
+mod palette;
 
 fn main() {
     let opengl = OpenGL::V3_2;
+    // Assume an aspect ratio eq to 640x480
+    // Assume a 24x24 game zone
+    // This leaves 12 "squares" of space for a sidebar
+    // Game zone needs a 1 square border
+    const WIDTH: u32 = 640;
+    const HEIGHT: u32 = 480;
+    const GAME_DIM: u32 = 24;
+    const SQUARE_WIDTH: u32 = HEIGHT / GAME_DIM;
 
     // Create window to display the game
     let mut window: GlutinWindow = WindowSettings::new(
             "Snake Game",
-            [640, 480]
+            [WIDTH, HEIGHT]
         )
         .opengl(opengl)
         .samples(4)
@@ -35,7 +46,7 @@ fn main() {
         .unwrap();
 
     // Create a new game and run it
-    let mut game = Game::new(GlGraphics::new(opengl));
+    let mut game = Game::new(GlGraphics::new(opengl), GAME_DIM, SQUARE_WIDTH);
 
     // Create an event pump
     let mut events = Events::new(EventSettings::new()).ups(8);
@@ -46,7 +57,9 @@ fn main() {
         }
 
         if let Some(u) = e.update_args() {
-            game.update(&u);
+            if !game.update(&u) {
+                break;
+            }
         }
 
         if let Some(k) = e.button_args() {
@@ -55,4 +68,6 @@ fn main() {
             }
         }
     }
+
+    println!("GAME OVER");
 }

@@ -1,71 +1,128 @@
-extern crate piston;
-extern crate graphics;
-extern crate glutin_window;
-extern crate opengl_graphics;
-
 use piston::input::*;
 use opengl_graphics::{ GlGraphics };
 use snake::Snake;
 use snake::Direction;
+use food::Food;
+use palette::_BLACK as BLACK;
+use palette::_GAME_BG as GAME_BG;
+use palette::_GAME_BORDER as GAME_BORDER;
+use palette::_GAME_TEXT as GAME_TEXT;
 
 pub struct Game {
     pub gl: GlGraphics,
-    rotation: f64,
-    snake: Snake
+    pub dimension: u32,
+    pub width: u32,
+    just_ate: bool,
+    score: u64,
+    snake: Snake,
+    food: Food
 }
 
 impl Game {
-    pub fn new(gl: GlGraphics) -> Game {
+    pub fn new(gl: GlGraphics, dimension: u32, width: u32) -> Game {
+        let snake = Snake::new();
+        let food = Food::new(dimension, width, &snake);
         Game {
-            gl: gl,
-            rotation: 0.0,
-            snake: Snake::new(),
+            gl,
+            dimension,
+            width,
+            just_ate: false,
+            score: 0,
+            snake,
+            food,
         }
     }
 
     pub fn render(&mut self, args: &RenderArgs) {
         use graphics;
-        use graphics::Transformed;
+        use graphics::rectangle;
 
-        const GREEN: [f32; 4] = [0.0, 1.0, 0.0, 1.0];
-        const RED:   [f32; 4] = [1.0, 0.0, 0.0, 1.0];
-
-        let square = graphics::rectangle::square(0.0, 0.0, 150.0);
-        let rotation = self.rotation;
-        let (x, y) = ((args.width / 2) as f64,
-                      (args.height / 2) as f64);
+        let bg_offset: f64 = self.width.into();
+        let bg_outer_width: f64 = self.dimension as f64 * bg_offset;
+        let bg_width: f64 = bg_outer_width - ( 2.0 * bg_offset);
+        let bg_outer_rect = rectangle::Rectangle::new_round(GAME_BORDER, 8.0);
+        let bg_rect = rectangle::Rectangle::new_round(GAME_BG, 6.0);
 
         self.gl.draw(args.viewport(), |c, gl| {
             // wipe screen
-            graphics::clear(GREEN, gl);
+            graphics::clear(BLACK, gl);
 
-            let transform = c.transform
-                .trans(x, y)
-                .rot_rad(rotation)
-                .trans(-75.0, -75.0);
-
-            // draw the box
-            graphics::rectangle(RED, square, transform, gl);
+            // draw game background
+            bg_outer_rect.draw(
+                [0.0, 0.0, bg_outer_width, bg_outer_width],
+                &c.draw_state,
+                c.transform,
+                gl,
+            );
+            bg_rect.draw(
+                [bg_offset, bg_offset, bg_width, bg_width],
+                &c.draw_state,
+                c.transform,
+                gl,
+            );
         });
 
-        self.snake.render(&mut self.gl, args);
+        self.food.render(&mut self.gl, args, self.width);
+        self.snake.render(&mut self.gl, args, self.width);
     }
 
-    pub fn update(&mut self, args: &UpdateArgs) {
-        // Rotate 2 radians per second
-        self.rotation += 4.0 * args.dt;
-        self.snake.update();
+    pub fn update(&mut self, args: &UpdateArgs) -> bool {
+        if !self.snake.update(self.dimension) { return false };
+
+        if self.just_ate {
+            self.score += 1;
+            self.just_ate = false;
+        }
+
+        self.just_ate = self.food.update(args, &self.snake);
+
+        if self.just_ate {
+            self.food = Food::new(self.dimension, self.width, &self.snake);
+            // use rand::Rng;
+            // use rand::thread_rng;
+            //
+            // // pick a random coord for new food and make sure our snake isn't there
+            // let mut r = thread_rng();
+            // loop {
+            //     let x = r.gen_range(0, self.dim);
+            //     let y = r.gen_range(0, self.dim);
+            //     if !self.snake.is_collide(x, y) {
+            //         self.food = Food::new(x, y, &self.snake);
+            //         break;
+            //     }
+            // }
+        }
+
+        true
     }
 
     pub fn pressed(&mut self, btn: &Button) {
-        let last_direction = self.snake.dir.clone();
-
-        self.snake.dir = match btn {
-            &Button::Keyboard(Key::Up) if last_direction != Direction::Down => Direction::Up,
-            &Button::Keyboard(Key::Down) if last_direction != Direction::Up => Direction::Down,
-            &Button::Keyboard(Key::Left) if last_direction != Direction::Right => Direction::Left,
-            &Button::Keyboard(Key::Right) if last_direction != Direction::Left => Direction::Right,
-            _ => last_direction
+        // Here's an optional working approach to the `match btn` below
+        // ```
+        // let new_dir: Option<Direction> = match btn {
+        //     &Button::Keyboard(Key::Up) => Some(Direction::Up),
+        //     &Button::Keyboard(Key::Down) => Some(Direction::Down),
+        //     &Button::Keyboard(Key::Left) => Some(Direction::Left),
+        //     &Button::Keyboard(Key::Right) => Some(Direction::Right),
+        //     _ => None,
+        // };
+        //
+        // if let Some(d) = new_dir {
+        //     self.snake.change_dir(d);
+        // }
+        // // The above could be replaced with:
+        // // match new_dir {
+        // //     Some(d) => self.snake.change_dir(d),
+        // //     None => (),
+        // //     // _ => (), also works here
+        // // };
+        // ```
+        match btn {
+            &Button::Keyboard(Key::Up) => self.snake.change_dir(Direction::Up),
+            &Button::Keyboard(Key::Down) => self.snake.change_dir(Direction::Down),
+            &Button::Keyboard(Key::Left) => self.snake.change_dir(Direction::Left),
+            &Button::Keyboard(Key::Right) => self.snake.change_dir(Direction::Right),
+            _ => (),
         };
     }
 }
