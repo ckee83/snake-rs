@@ -72,7 +72,7 @@ impl Game {
         if self.just_ate {
             self.score += 1;
             self.just_ate = false;
-            print!("Score increased to {:?}", self.score);
+            println!("Score increased to {:?}", self.score);
         }
 
         self.just_ate = self.food.update(args, &self.snake);

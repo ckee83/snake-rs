@@ -71,12 +71,10 @@ impl Snake {
             return false;
         }
 
-        if !just_ate {
-            self.body.pop_back();
-        }
+        if !just_ate { self.body.pop_back(); }
+        if self.is_collide(new_head.0, new_head.1) { return false; }
 
         self.body.push_front(new_head);
-        self.body.pop_back().unwrap();
 
         true
     }
