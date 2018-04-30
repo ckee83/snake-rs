@@ -1,8 +1,11 @@
 # Snake RS
 
-The classic game implemented in [Rust](https://www.rust-lang.org/en-US/) using the Piston game engine.
+The classic game implemented in [Rust](https://www.rust-lang.org/en-US/) using the [Piston](http://www.piston.rs/) game engine.
 
 ## Quick Start
+[Installing Rust](https://www.rust-lang.org/en-US/install.html)
+[Installing Cargo](https://doc.rust-lang.org/cargo/getting-started/installation.html#install-nightly-cargo)
+
 ```sh
 $ git clone git@github.com:ckee83/snake-rs.git
 $ cd snake-rs
