@@ -11,13 +11,13 @@ $ cargo run
 
 ## Game Controls
 
-| KEY | ACTION |
-|:- |: |
-| UP ARROW | Move up |
-| DOWN ARROW | Move down |
-| LEFT ARROW | Move left |
-| RIGHT ARROW | Move right |
-| SPACE | Pause/New Game |
+KEY | ACTION
+:--- |:---
+UP ARROW | Move up
+DOWN ARROW | Move down
+LEFT ARROW | Move left
+RIGHT ARROW | Move right
+SPACE | Pause/New Game
 
 
 ## Attribution
