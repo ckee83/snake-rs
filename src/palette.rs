@@ -21,7 +21,6 @@
 /// BLUE_LIGHT       44.7, 27.5, 100
 /// BLUE_DARK        6.3, 0, 26.3
 
-
 pub const _BLACK: [f32; 4] = [0.0, 0.0, 0.0, 1.0];
 pub const _T_BLACK: [f32; 4] = [0.0, 0.0, 0.0, 0.5];
 pub const _WHITE: [f32; 4] = [1.0, 1.0, 1.0, 1.0];
@@ -36,12 +35,13 @@ pub const _L_YELLOW: [f32; 4] = [1.0, 0.890, 0.369, 1.0];
 pub const _D_YELLOW: [f32; 4] = [0.592, 0.490, 0.0, 1.0];
 
 pub const _RED: [f32; 4] = [1.0, 0.298, 0.0, 1.0];
+pub const _T_RED: [f32; 4] = [1.0, 0.298, 0.0, 0.5];
 pub const _L_RED: [f32; 4] = [1.0, 0.424, 0.18, 1.0];
 pub const _D_RED: [f32; 4] = [0.384, 0.114, 0.0, 1.0];
 
-pub const _BLUE: [f32; 4] = [22.0, 0.0, 92.5, 1.0];
-pub const _L_BLUE: [f32; 4] = [44.7, 27.5, 1.0, 1.0];
-pub const _D_BLUE: [f32; 4] = [6.3, 0.0, 26.3, 1.0];
+pub const _BLUE: [f32; 4] = [0.220, 0.0, 0.925, 1.0];
+pub const _L_BLUE: [f32; 4] = [0.447, 0.275, 1.0, 1.0];
+pub const _D_BLUE: [f32; 4] = [0.63, 0.0, 0.263, 1.0];
 
 pub const _SNAKE_PRIMARY: [f32; 4] = _GREEN;
 pub const _SNAKE_HEAD: [f32; 4] = _D_GREEN;
@@ -50,8 +50,11 @@ pub const _SNAKE_TAIL: [f32; 4] = _L_GREEN;
 pub const _GAME_BG: [f32; 4] = _VL_GREEN;
 pub const _GAME_BORDER: [f32; 4] = _D_RED;
 
-pub const _TEXT: [f32; 4] = _L_YELLOW;
-pub const _TEXT_ALT: [f32; 4] = _L_GREEN;
+pub const _TEXT: [f32; 4] = _D_RED;
+pub const _TEXT_ALT: [f32; 4] = _L_YELLOW;
 
-pub const _FOOD_PRIMARY: [f32; 4] = _BLUE;
+pub const _SCORE_BG: [f32; 4] = _T_RED;
+pub const _SCORE_BORDER: [f32; 4] = _D_GREEN;
+
+pub const _FOOD_PRIMARY: [f32; 4] = _L_BLUE;
 pub const _FOOD_SECONDARY: [f32; 4] = _L_BLUE;
