@@ -1,9 +1,3 @@
-//! Snake game
-//!
-//! Completed code for [video by @youcodethings](https://youtu.be/HCwMb0KslX8)
-//!
-//! Author: ckee
-
 extern crate piston;
 extern crate graphics;
 extern crate glutin_window;
@@ -20,6 +14,7 @@ use snake_game::Game;
 mod snake_game;
 mod snake;
 mod food;
+mod text_renderer;
 mod palette;
 
 fn main() {

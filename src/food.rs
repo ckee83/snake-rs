@@ -4,7 +4,6 @@ use rand::Rng;
 use rand::thread_rng;
 use snake::Snake;
 use palette::_FOOD_PRIMARY as FOOD_PRIMARY;
-use palette::_BLACK as BLACK;
 
 pub struct Food {
     pub dimension: u32,

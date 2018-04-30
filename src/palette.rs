@@ -23,6 +23,7 @@
 
 
 pub const _BLACK: [f32; 4] = [0.0, 0.0, 0.0, 1.0];
+pub const _T_BLACK: [f32; 4] = [0.0, 0.0, 0.0, 0.5];
 pub const _WHITE: [f32; 4] = [1.0, 1.0, 1.0, 1.0];
 
 pub const _GREEN: [f32; 4] = [0.0, 0.922, 0.549, 1.0];
@@ -48,8 +49,9 @@ pub const _SNAKE_TAIL: [f32; 4] = _L_GREEN;
 
 pub const _GAME_BG: [f32; 4] = _VL_GREEN;
 pub const _GAME_BORDER: [f32; 4] = _D_RED;
-pub const _GAME_TEXT: [f32; 4] = _L_YELLOW;
-pub const _GAME_TEXT_ALT: [f32; 4] = _L_GREEN;
+
+pub const _TEXT: [f32; 4] = _L_YELLOW;
+pub const _TEXT_ALT: [f32; 4] = _L_GREEN;
 
 pub const _FOOD_PRIMARY: [f32; 4] = _BLUE;
 pub const _FOOD_SECONDARY: [f32; 4] = _L_BLUE;
