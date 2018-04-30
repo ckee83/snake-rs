@@ -52,9 +52,10 @@ fn main() {
         }
 
         if let Some(u) = e.update_args() {
-            if !game.update(&u) {
-                break;
-            }
+            game.update(&u);
+            // if !game.update(&u) {
+            //     break;
+            // }
         }
 
         if let Some(k) = e.button_args() {

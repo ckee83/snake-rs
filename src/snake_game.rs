@@ -123,19 +123,34 @@ impl<'a> Game<'a> {
                 gl,
             );
         });
-        // "Paused" text
-        let pausetxt_x = (self.width * self.dimension) / 2 - 72;
-        let pausetxt_y = (self.width * self.dimension) / 2 - 8;
-        let pausetxt = String::from("Paused");
-        self.text_renderer.large(&mut self.gl, args, pausetxt_x, pausetxt_y, &pausetxt);
+
+
+        let txt_x = (self.width * self.dimension) / 2 - 72;
+        let txt_y = (self.width * self.dimension) / 2 - 8;
+        let txt: String;
+
+        if self.game_over {
+            // render "Game Over" text
+            txt = String::from("Game Over");
+            // self.text_renderer.large(&mut self.gl, args, txt_x, txt_y, &txt);
+        } else {
+            // render "Paused" text
+            txt = String::from("Paused");
+            // self.text_renderer.large(&mut self.gl, args, txt_x, txt_y, &txt);
+        }
+        self.text_renderer.large(&mut self.gl, args, txt_x, txt_y, &txt);
 
     }
 
-    pub fn update(&mut self, args: &UpdateArgs) -> bool {
+    pub fn update(&mut self, args: &UpdateArgs) {
         // Don't process updates if the game is paused
-        if self.paused { return true; }
+        if self.paused { return; }
 
-        if !self.snake.update(self.dimension, self.just_ate) { return false };
+        if !self.snake.update(self.dimension, self.just_ate) {
+            self.paused = true;
+            self.game_over = true;
+            return;
+        };
 
         if self.just_ate {
             self.score += 1;
@@ -147,9 +162,7 @@ impl<'a> Game<'a> {
 
         if self.just_ate {
             self.food = Food::new(self.dimension, self.width, &self.snake);
-        }
-
-        true
+        };
     }
 
     pub fn pressed(&mut self, btn: &Button) {
