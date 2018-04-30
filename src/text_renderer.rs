@@ -37,7 +37,6 @@ impl<'a> TextRenderer<'a> {
 
         gl.draw(args.viewport(), |c, gl| {
             let text_transform = c.transform.trans(x.into(), y.into());
-                // .scale(1.5, 1.0);
 
             text::Text::new_color(color, font_size).draw(
                 &txt,
@@ -50,15 +49,12 @@ impl<'a> TextRenderer<'a> {
     }
 
     pub fn large(&mut self, gl: &mut GlGraphics, args: &RenderArgs, x: u32, y: u32, txt: &String) {
-
         self.render(gl, args, x, y, txt, 32, TEXT_ALT);
     }
     pub fn medium(&mut self, gl: &mut GlGraphics, args: &RenderArgs, x: u32, y: u32, txt: &String) {
-
         self.render(gl, args, x, y, txt, 16, TEXT);
     }
     pub fn small(&mut self, gl: &mut GlGraphics, args: &RenderArgs, x: u32, y: u32, txt: &String) {
-
-        self.render(gl, args, x, y, txt, 12, TEXT);
+        self.render(gl, args, x, y, txt, 12, TEXT_ALT);
     }
 }

@@ -45,6 +45,15 @@ impl<'a> Game<'a> {
             }
     }
 
+    fn reset(&mut self) {
+        self.snake = Snake::new();
+        self.food = Food::new(self.dimension, self.width, &self.snake);
+        self.just_ate = false;
+        self.score = 0;
+        self.paused = false;
+        self.game_over = false;
+    }
+
     pub fn render(&mut self, args: &RenderArgs) {
         use graphics;
         use graphics::rectangle;
@@ -88,11 +97,11 @@ impl<'a> Game<'a> {
             );
         });
 
-        /// Draw the food
+        // Draw the food
         self.food.render(&mut self.gl, args, self.width);
-        /// Draw the snake
+        // Draw the snake
         self.snake.render(&mut self.gl, args, self.width);
-        /// Draw Scoreboard
+        // Draw Scoreboard
         let score_x = (self.width * self.dimension) + 14;
         let score_y = 0 + 40;
         let score_txt = format!("NOMS: {}", self.score);
@@ -125,18 +134,19 @@ impl<'a> Game<'a> {
         });
 
 
-        let txt_x = (self.width * self.dimension) / 2 - 72;
+        let mut txt_x = (self.width * self.dimension) / 2 - 72;
         let txt_y = (self.width * self.dimension) / 2 - 8;
         let txt: String;
 
         if self.game_over {
             // render "Game Over" text
-            txt = String::from("Game Over");
-            // self.text_renderer.large(&mut self.gl, args, txt_x, txt_y, &txt);
+            txt = String::from("GAME OVER");
+            txt_x -= 82;
+            let restart_txt = String::from("[space] to go again");
+            self.text_renderer.small(&mut self.gl, args, txt_x + 48, txt_y + 24, &restart_txt);
         } else {
             // render "Paused" text
             txt = String::from("Paused");
-            // self.text_renderer.large(&mut self.gl, args, txt_x, txt_y, &txt);
         }
         self.text_renderer.large(&mut self.gl, args, txt_x, txt_y, &txt);
 
@@ -170,7 +180,12 @@ impl<'a> Game<'a> {
         if self.paused {
             match btn {
                 // allow unpause
-                &Button::Keyboard(Key::Space) => self.paused = false,
+                &Button::Keyboard(Key::Space) => {
+                    if self.game_over {
+                        self.reset();
+                    }
+                    self.paused = false;
+                },
                 _ => (),
             };
         } else {

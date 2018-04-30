@@ -15,6 +15,7 @@ pub struct SnakePiece(u32, u32);
 pub struct Snake {
     body: LinkedList<SnakePiece>,
     pub dir: Direction,
+    next_dir: Direction,
 }
 
 impl Snake {
@@ -27,6 +28,7 @@ impl Snake {
         Snake {
             body,
             dir: Direction::Right,
+            next_dir: Direction::Right,
         }
     }
 
@@ -55,6 +57,9 @@ impl Snake {
     pub fn update(&mut self, dim: u32, just_ate: bool) -> bool {
         let mut new_head: SnakePiece = (*self.body.front().expect("Snake has no body")).clone();
 
+        // update the direction
+        self.dir = self.next_dir.clone();;
+
         // Give the new head location based on direction
         match self.dir {
             Direction::Left => new_head.0 -= 1,
@@ -80,14 +85,15 @@ impl Snake {
     }
 
     pub fn change_dir(&mut self, dir: Direction) {
+        // queue the next direction
         let last_dir = self.dir.clone();
 
-        self.dir = match dir {
+        self.next_dir = match dir {
             Direction::Up if last_dir != Direction::Down => Direction::Up,
             Direction::Down if last_dir != Direction::Up => Direction::Down,
             Direction::Left if last_dir != Direction::Right => Direction::Left,
             Direction::Right if last_dir != Direction::Left => Direction::Right,
-            _ => last_dir
+            _ => self.next_dir.clone()
         };
     }
 
