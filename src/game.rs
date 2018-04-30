@@ -11,7 +11,6 @@ use palette::_SCORE_BORDER as _SCORE_BORDER;
 use palette::_GAME_BG as GAME_BG;
 use palette::_GAME_BORDER as GAME_BORDER;
 
-
 pub struct Game<'a> {
     pub gl: GlGraphics,
     pub dimension: u32,
@@ -97,11 +96,11 @@ impl<'a> Game<'a> {
             );
         });
 
-        // Draw the food
+        // draw the food
         self.food.render(&mut self.gl, args, self.width);
-        // Draw the snake
+        // draw the snake
         self.snake.render(&mut self.gl, args, self.width);
-        // Draw Scoreboard
+        // draw Scoreboard
         let score_x = (self.width * self.dimension) + 14;
         let score_y = 0 + 40;
         let score_txt = format!("NOMS: {}", self.score);
@@ -132,7 +131,6 @@ impl<'a> Game<'a> {
                 gl,
             );
         });
-
 
         let mut txt_x = (self.width * self.dimension) / 2 - 72;
         let txt_y = (self.width * self.dimension) / 2 - 8;
@@ -165,7 +163,6 @@ impl<'a> Game<'a> {
         if self.just_ate {
             self.score += 1;
             self.just_ate = false;
-            println!("Score increased to {:?}", self.score);
         }
 
         self.just_ate = self.food.update(args, &self.snake);
@@ -200,6 +197,5 @@ impl<'a> Game<'a> {
                 _ => (),
             };
         }
-
     }
 }

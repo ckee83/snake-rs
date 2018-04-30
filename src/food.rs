@@ -25,6 +25,7 @@ impl Food {
             rotation: 0.0,
         };
 
+        // keep trying till we get one
         loop {
             let x = r.gen_range(0, dimension - 2) + 1;
             let y = r.gen_range(0, dimension - 2) + 1;
@@ -35,8 +36,7 @@ impl Food {
             }
         };
 
-        println!("Rendering food at {:?}, {:?}", food.pos_x, food.pos_y);
-
+        // return the new food
         food
     }
 

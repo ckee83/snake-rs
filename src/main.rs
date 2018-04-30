@@ -4,25 +4,24 @@ extern crate glutin_window;
 extern crate opengl_graphics;
 extern crate rand;
 
-use piston::window::WindowSettings;
-use piston::event_loop::*;
-use piston::input::*;
-use glutin_window::GlutinWindow;
-use opengl_graphics::{ GlGraphics, OpenGL };
-
-use snake_game::Game;
-mod snake_game;
+mod game;
 mod snake;
 mod food;
 mod text_renderer;
 mod palette;
 
+use piston::window::WindowSettings;
+use piston::event_loop::*;
+use piston::input::*;
+use glutin_window::GlutinWindow;
+use opengl_graphics::{ GlGraphics, OpenGL };
+use game::Game;
+
 fn main() {
     let opengl = OpenGL::V3_2;
-    // Assume an aspect ratio eq to 640x480
     // Assume a 24x24 game zone
     // This leaves 12 "squares" of space for a sidebar
-    // Game zone needs a 1 square border
+    // Game zone needs a 1 square-width border
     const WIDTH: u32 = 640;
     const HEIGHT: u32 = 480;
     const GAME_DIM: u32 = 24;
@@ -53,9 +52,6 @@ fn main() {
 
         if let Some(u) = e.update_args() {
             game.update(&u);
-            // if !game.update(&u) {
-            //     break;
-            // }
         }
 
         if let Some(k) = e.button_args() {
